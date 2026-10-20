@@ -1,83 +1,100 @@
-// Write your Pizza Builder JavaScript in this file.
+// Define pizza state
 
-// Constants
-const basePrice = 10;
-const ingredients = {
-  pepperoni: { name: 'pepperoni', price: 1 },
-  mushrooms: { name: 'Mushrooms', price: 1 },
-  greenPeppers: { name: 'Green Peppers', price: 1 },
-  whiteSauce: { name: 'White sauce', price: 3 },
-  glutenFreeCrust: { name: 'Gluten-free crust', price: 5 }
-};
-
-// Initial value of the state (the state values can change over time)
-const state = {
+const pizza = {
   pepperoni: true,
   mushrooms: true,
   greenPeppers: true,
-  whiteSauce: false,
-  glutenFreeCrust: false
+  whiteSauce: true,
+  glutenFreeCrust: true,
 };
 
-// This function takes care of rendering the pizza based on the state
-// This function is triggered once at the beginning and every time the state is changed
-function renderEverything() {
-  renderPepperoni();
-  renderMushrooms();
-  renderGreenPeppers();
-  renderWhiteSauce();
-  renderGlutenFreeCrust();
+const precios = document.querySelectorAll(".panel.price ul li")
 
-  renderButtons();
-  renderPrice();
-}
+function renderPizza() {
+  let valores = Object.values(pizza)
 
-function renderPepperoni() {
-  document.querySelectorAll('.pep').forEach((onePep) => {
-    if (state.pepperoni) {
-      onePep.style.visibility = 'visible';
-    } else {
-      onePep.style.visibility = 'hidden';
+  const rodajasPeperoni = document.querySelectorAll(".pep")
+  rodajasPeperoni.forEach(rodaja => {
+    rodaja.style.visibility = pizza.pepperoni === true ? "visible" : "hidden";
+  })
+
+  const setas = document.querySelectorAll(".mushroom")
+  setas.forEach(seta => {
+    seta.style.visibility = pizza.mushrooms === true ? "visible" : "hidden";
+  })
+
+  const pimientos = document.querySelectorAll(".green-pepper")
+  pimientos.forEach(pimiento => {
+    pimiento.style.visibility = pizza.greenPeppers === true ? "visible" : "hidden";
+  })
+
+  const salsa = document.querySelector(".sauce")
+  pizza.whiteSauce === true ? salsa.classList.add("sauce-white") : salsa.classList.remove("sauce-white")
+
+  const masa = document.querySelector(".crust")
+  pizza.glutenFreeCrust === true ? masa.classList.add("crust-gluten-free") : masa.classList.remove("crust-gluten-free")
+
+  precios.forEach((precio, index) => {
+    valores[index] === true ? precio.style.display = "inherit" : precio.style.display = "none"
+  })
+
+  let precioTotal = 10
+  for (let ingrediente in pizza) {
+   if (pizza[ingrediente] === true) {
+    if (ingrediente === "pepperoni") {
+      precioTotal += 1
+    } else if (ingrediente === "mushrooms") {
+      precioTotal += 1 
+    } else if (ingrediente === "greenPeppers") {
+      precioTotal += 1
+    } else if (ingrediente === "whiteSauce") {
+      precioTotal += 3
+    } else if (ingrediente === "glutenFreeCrust") {
+      precioTotal += 5
     }
-  });
+   }
+  }
+  document.querySelector(".panel.price strong").innerHTML= "$" + precioTotal
+
+
 }
 
-function renderMushrooms() {
-  // Iteration 1: set the visibility of `<section class="mushroom">`
+const btnPep = document.querySelector(".btn.btn-pepperoni");
+
+btnPep.onclick = function () {
+  pizza.pepperoni === true ? pizza.pepperoni = false : pizza.pepperoni = true
+  btnPep.classList.toggle("active")
+  renderPizza()
+};
+
+const btnMush = document.querySelector(".btn.btn-mushrooms");
+
+btnMush.onclick = function () {
+  pizza.mushrooms === true ? pizza.mushrooms = false : pizza.mushrooms = true
+  btnMush.classList.toggle("active")
+  renderPizza()
 }
 
-function renderGreenPeppers() {
-  // Iteration 1: set the visibility of `<section class="green-pepper">`
+const btnGrPp = document.querySelector(".btn.btn-green-peppers");
+
+btnGrPp.onclick = function () {
+  pizza.greenPeppers === true ? pizza.greenPeppers = false : pizza.greenPeppers = true
+  btnGrPp.classList.toggle("active")
+  renderPizza()
 }
 
-function renderWhiteSauce() {
-  // Iteration 2: add/remove the class "sauce-white" of `<section class="sauce">`
+const btnWhtSc = document.querySelector(".btn-sauce")
+
+btnWhtSc.onclick = function () {
+  pizza.whiteSauce === true ? pizza.whiteSauce = false : pizza.whiteSauce = true
+  btnWhtSc.classList.toggle("active")
+  renderPizza()
 }
 
-function renderGlutenFreeCrust() {
-  // Iteration 2: add/remove the class "crust-gluten-free" of `<section class="crust">`
+const btnCrust = document.querySelector(".btn-crust")
+
+btnCrust.onclick = function () {
+  pizza.glutenFreeCrust === true ? pizza.glutenFreeCrust = false : pizza.glutenFreeCrust = true
+  btnCrust.classList.toggle("active")
+  renderPizza()
 }
-
-function renderButtons() {
-  // Iteration 3: add/remove the class "active" of each `<button class="btn">`
-}
-
-function renderPrice() {
-  // Iteration 4: change the HTML of `<aside class="panel price">`
-}
-
-renderEverything();
-
-// Iteration 1: Example of a click event listener on `<button class="btn btn-pepperoni">`
-document.querySelector('.btn.btn-pepperoni').addEventListener('click', function () {
-  state.pepperoni = !state.pepperoni;
-  renderEverything();
-});
-
-// Iteration 1: Add click event listener on `<button class="btn btn-mushrooms">`
-
-// Iteration 1: Add click event listener on `<button class="btn btn-green-peppers">`
-
-// Iteration 2: Add click event listener on `<button class="btn btn-sauce">`
-
-// Iteration 2: Add click event listener on `<button class="btn btn-crust">`
